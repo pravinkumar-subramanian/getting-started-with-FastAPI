@@ -17,17 +17,17 @@ I am using PostgreSQL database for storing the information. So all the parameter
 
 > Note: .env file should have all the below parameters. When you start the FastAPI backend, the script will automatically create the database and schema (which you specify in .env), if it doesn't exist already
 
-DEFAULT_DATABASE_URI=postgresql://<username>:<password>@<localhost or ip>:<port>/postgres?sslmode=prefer
-DATABASE_URI=postgresql://<username>:<password>@<localhost or ip>:<port>/  
-DATABASE_NAME=<database_name>  
-SCHEMA_NAME=<schema name>
-PROJECT=<project name>
+DEFAULT_DATABASE_URI=postgresql://username:password@localhost or ip:port/postgres?sslmode=prefer
+DATABASE_URI=postgresql://username:password@localhost or ip:port/  
+DATABASE_NAME=database_name  
+SCHEMA_NAME=schema_name
+PROJECT=project_name
 DESCRIPTION=This is the backend server for your application
-ROOT_USER=<rootuser@gmail.com>  
-ROOT_USER_PASSWORD=<password>
+ROOT_USER=rootuser@gmail.com  
+ROOT_USER_PASSWORD=password
 ENCRYPTION=HS256  
 TOKEN_EXPIRY=60  
-TOKEN_SECRET=<random15text>
+TOKEN_SECRET=random15text
 
 ### Step2: Run below scripts one by one
 
@@ -71,7 +71,7 @@ After running this command, you can find the database and schemas created in the
 
 ### Step3: Insert the rootuser into the Users table
 
-Open [SwaggerUI](http://localhost:8000/api/docs/), expand **default** tag APIs and execute **/api/rootuser** to create the root user. Now click the **Authorize** button and use the credentials defined in .env file to use protected APIs.
+Open [SwaggerUI](http://localhost:8000/api/docs/) ([http://localhost:8000/api/docs/](http://localhost:8000/api/docs/)), expand **default** tag APIs and execute **/api/rootuser** to create the root user. Now click the **Authorize** button and use the credentials defined in .env file to use protected APIs.
 
 ```diff
 You are good to go!!!
