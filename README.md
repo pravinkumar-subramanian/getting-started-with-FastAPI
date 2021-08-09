@@ -20,13 +20,13 @@ I am using PostgreSQL database for storing the information. So all the parameter
 DEFAULT_DATABASE_URI=postgresql://username:password@localhost or ip:port/postgres?sslmode=prefer
 DATABASE_URI=postgresql://username:password@localhost or ip:port/  
 DATABASE_NAME=database_name  
-SCHEMA_NAME=schema_name
-PROJECT=project_name
-DESCRIPTION=This is the backend server for your application
+SCHEMA_NAME=schema_name   
+PROJECT=project_name   
+DESCRIPTION=This is the backend server for your application   
 ROOT_USER=rootuser@gmail.com  
-ROOT_USER_PASSWORD=password
+ROOT_USER_PASSWORD=password   
 ENCRYPTION=HS256  
-TOKEN_EXPIRY=60  
+TOKEN_EXPIRY=60   
 TOKEN_SECRET=random15text
 
 ### Step2: Run below scripts one by one
