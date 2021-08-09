@@ -4,18 +4,18 @@ This project is bootstrapped with [FastAPI](https://fastapi.tiangolo.com/).
 
 ## Overview of this project
 
-When you are done with running the FastAPI, you will see user and security module in the API list.
+When you are done with running the FastAPI (after you complete the below instructions) , you will see **user** and **security** module in the API list.
 
 1. User APIs will allow you to **CRUD (create, read, update and delete)** user details.
-2. Security APIs will fetch data from the table **security** which will have details of user logins. These APIs are created for you to know how to maintain separate modules for each function. You can try replicating the same for other functions (like creating CRUD for data table and maintaining separate model, schema and crud).
+2. Security APIs will fetch data from the table **security** which will have details of users login. These APIs are created for you to understand how to maintain separate modules for each function. You can try replicating the same for some other functions (like creating CRUD for data table and maintaining separate model, schema and crud).
 
-I am using PostgreSQL database for storing all the data. So all the parameters are defined for PostgreSQL in this project. But all the SQL databases should follow the same steps mentioned below.
+I am using PostgreSQL database for storing the information. So all the parameters are defined for PostgreSQL in this project. But other SQL databases should follow the same steps mentioned below.
 
 ## Follow the below steps to use FastAPI
 
 ### Step 1: Create .env file
 
-> Note: .env file should have all the below parameters
+> Note: .env file should have all the below parameters. When you start the FastAPI backend, the script will automatically create the database and schema (which you specify in .env), if it doesn't exist already
 
 DEFAULT_DATABASE_URI=postgresql://<username>:<password>@<localhost or ip>:<port>/postgres?sslmode=prefer
 DATABASE_URI=postgresql://<username>:<password>@<localhost or ip>:<port>/  
@@ -67,7 +67,7 @@ This will install all the dependencies mentioned in the requirements.txt file.
 ## `uvicorn main:app --reload`
 
 This will start the uvicorn server with **main.py** file as root file and **--reload** automatically reloads when there is a change in files.
-After running this command, you can find the database and schemas created in the database server.
+After running this command, you can find the database and schemas created in the database server. Also the tables defined in the **models** folder will also be automatically created. You can add data into the table manually using **PgAdmin**
 
 ### Step3: Insert the rootuser into the Users table
 
