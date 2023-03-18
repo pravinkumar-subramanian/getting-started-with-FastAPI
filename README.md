@@ -17,17 +17,20 @@ I am using PostgreSQL database for storing the information. So all the parameter
 
 > Note: .env file should have all the below parameters. When you start the FastAPI backend, the script will automatically create the database and schema (which you specify in .env), if it doesn't exist already
 
-DEFAULT_DATABASE_URI=postgresql://username:password@localhost or ip:port/postgres?sslmode=prefer
-DATABASE_URI=postgresql://username:password@localhost or ip:port/  
+FRONTEND_URL=your frontend UI link
+DEFAULT_DATABASE_URI=postgresql://username:password@<localhost or ip>:port/postgres?sslmode=prefer
+DATABASE_URI=postgresql://username:password@<localhost or ip>:port/  
 DATABASE_NAME=database_name  
 SCHEMA_NAME=schema_name   
 PROJECT=project_name   
 DESCRIPTION=This is the backend server for your application   
 ROOT_USER=rootuser@gmail.com  
 ROOT_USER_PASSWORD=password   
+PASSWORD_LIMIT=15  
+PASSWORD_EXPIRY=45  
 ENCRYPTION=HS256  
-TOKEN_EXPIRY=60   
-TOKEN_SECRET=random15text
+TOKEN_NAME=xauth_token   
+TOKEN_EXPIRY=60
 
 ### Step2: Run below scripts one by one
 
@@ -64,14 +67,14 @@ This will install all the dependencies mentioned in the requirements.txt file.
 > Make sue the Microsoft Visual C++ version is greater than 14.0.
 > To install latest version of Microsoft Visual C++, download and open [Build Tools installer](https://visualstudio.microsoft.com/visual-cpp-build-tools/). Under **Workload**, select and install **C++ build tools**
 
-## `uvicorn main:app --reload`
+## `uvicorn main:app --reload --port 8001`
 
 This will start the uvicorn server with **main.py** file as root file and **--reload** automatically reloads when there is a change in files.
 After running this command, you can find the database and schemas created in the database server. Also the tables defined in the **models** folder will also be automatically created. You can add data into the table manually using **PgAdmin**
 
 ### Step3: Insert the rootuser into the Users table
 
-Open [SwaggerUI](http://localhost:8000/api/docs/) ([http://localhost:8000/api/docs/](http://localhost:8000/api/docs/)), expand **default** tag APIs and execute **/api/rootuser** to create the root user. Now click the **Authorize** button and use the credentials defined in .env file to use protected APIs.
+Open [SwaggerUI](http://localhost:8001/api/docs/) ([http://localhost:8001/api/docs/](http://localhost:8001/api/docs/)), expand **default** tag APIs and execute **/api/rootuser** to create the root user. Now click the **Authorize** button and use the credentials defined in .env file to use protected APIs.
 
 ```diff
 You are good to go!!!

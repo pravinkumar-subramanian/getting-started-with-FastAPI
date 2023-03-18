@@ -5,8 +5,10 @@ from jwt import PyJWTError
 from db import session
 from models import users as models
 from schemas import users as schemas
-from crud.users import get_user_by_email, create_user
+from crud.users import get_user_by_email
+from crud.session import read_session
 from core import security
+from datetime import datetime
 
 
 async def get_current_user(
@@ -17,6 +19,7 @@ async def get_current_user(
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+    """ Decode JWT """
     try:
         payload = jwt.decode(
             token, security.SECRET_KEY, algorithms=[security.ALGORITHM]
@@ -25,12 +28,17 @@ async def get_current_user(
         if email is None:
             raise credentials_exception
         permissions: str = payload.get("permissions")
-        token_data = schemas.TokenData(email=email, permissions=permissions)
+        session: str = payload.get("session")
+        token_data = schemas.TokenData(
+            email=email, permissions=permissions, id=session)
     except PyJWTError:
         raise credentials_exception
+    """ Fetch user data """
     user = get_user_by_email(db, token_data.email)
     if user is None:
         raise credentials_exception
+    """ Check for existing user session """
+    await read_session(user.user_uuid, token_data.id)
     return user
 
 
@@ -54,24 +62,45 @@ async def get_current_active_superuser(
 
 def authenticate_user(db, email: str, password: str):
     user = get_user_by_email(db, email)
-    if not user:
-        return False
+    # check for password expiry
+    expiry = user.expires_on
+    now = datetime.utcnow()
+    if now > expiry:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Password expired. Reset your password to access the application"
+        )
+    # check for inactive account
+    if not user.is_active:
+        if user.login_attempt > 4:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="User ID is locked after 5 incorrect login attempts. Contact your admin to unlock your account",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="User ID is inactive. Contact your admin",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+    # check password
     if not security.verify_password(password, user.hashed_password):
-        return False
-    return user
-
-
-def sign_up_new_user(db, email: str, password: str):
-    user = get_user_by_email(db, email)
-    if user:
-        return False  # User already exists
-    new_user = create_user(
-        db,
-        schemas.UserCreate(
-            email=email,
-            password=password,
-            is_active=True,
-            is_superuser=False,
-        ),
-    )
-    return new_user
+        user.login_attempt += 1
+        if user.login_attempt <= 4:
+            db.add(user)
+            db.commit()
+            raise HTTPException(
+                status_code=401, detail=f"Failed login attempt {user.login_attempt}/5. Incorrect credentials.")
+        if user.login_attempt > 4:
+            user.is_active = False
+            user.last_modified = datetime.utcnow()
+            db.add(user)
+            db.commit()
+            raise HTTPException(
+                status_code=401, detail="Incorrect credentials. Your account is locked after 5 unsuccessful attempts. Contact your admin to unlock your account.")
+    else:
+        user.login_attempt = 0
+        db.add(user)
+        db.commit()
+        return user

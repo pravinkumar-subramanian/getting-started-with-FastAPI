@@ -1,42 +1,35 @@
 from pydantic import BaseModel, validator
-from typing import Optional
 from datetime import datetime
 
 
 class SecurityBase(BaseModel):
-    email: str
-    device: Optional[str] = 'Unidentified'
-    os: Optional[str] = 'Unidentified'
-    ip: Optional[str] = 'Anonymous'
-    city: Optional[str] = None
-    region: Optional[str] = None
-    country_name: Optional[str] = None
-    postal: Optional[int] = None
-    latitude: Optional[float] = None
-    longitude: Optional[float] = None
-    org: Optional[str] = None
+    device: str
+    os: str
+    ip: str = '0.0.0.0'
+    city: str = None
+    region: str = None
+    country_name: str = None
+    postal: int = None
+    latitude: float = None
+    longitude: float = None
+    org: str = None
 
-    @validator('email')
-    def must_not_empty(cls, v):
-        print(cls, v)
-        if len(v) <= 5:
-            raise ValueError('email must be greater than 5 characters')
+    @validator('device')
+    def device_not_empty(cls, v):
+        if len(v.strip()) == 0 or len(v.strip()) > 40:
+            raise ValueError('Improper device name')
+        return v
+
+    @validator('os')
+    def os_not_empty(cls, v):
+        if len(v.strip()) == 0 or len(v.strip()) > 40:
+            raise ValueError('Improper OS name')
         return v
 
 
-class SecurityCreate(SecurityBase):
-    pass
-
-
 class SecurityOut(SecurityBase):
+    email: str
     time: datetime = None
-
-    class Config:
-        orm_mode = True
-
-
-class Security(SecurityBase):
-    id: int
 
     class Config:
         orm_mode = True

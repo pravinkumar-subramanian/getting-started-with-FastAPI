@@ -4,6 +4,7 @@ from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import sessionmaker
 from core import config
 
+
 # Creating database if not available
 try:
     engine1 = create_engine(config.SQLALCHEMY_DATABASE_URI +
@@ -12,7 +13,7 @@ try:
     conn.close()
     engine1.dispose()
 except OperationalError:
-    engine2 = create_engine(config.DEFAULT_DATABSE_URI, echo=True)
+    engine2 = create_engine(config.DEFAULT_DATABASE_URI, echo=True)
     conn = engine2.connect()
     conn.execute("commit")
     conn.execute("create database " + config.DATABASE_NAME)
@@ -22,7 +23,10 @@ except OperationalError:
 
 # Creating engine & Session
 engine = create_engine(config.SQLALCHEMY_DATABASE_URI +
-                       config.DATABASE_NAME + '?sslmode=prefer', echo=True)
+                       config.DATABASE_NAME + '?sslmode=prefer',
+                       pool_size=20,
+                       max_overflow=30,
+                       echo=True)
 Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 schema_name = config.SCHEMA_NAME
 

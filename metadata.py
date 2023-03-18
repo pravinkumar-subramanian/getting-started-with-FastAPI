@@ -1,7 +1,7 @@
 tags_metadata = [
     {
         "name": "default",
-        "description": "Welcome to FastAPI",
+        "description": "Welcome to REST APIs",
     },
     {
         "name": "auth",
