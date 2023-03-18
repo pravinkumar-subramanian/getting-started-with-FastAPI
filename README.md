@@ -1,4 +1,4 @@
-# Getting Started with FastAPI
+# Getting Started with FastAPI + PostgreSQL + Form authentication
 
 This project is bootstrapped with [FastAPI](https://fastapi.tiangolo.com/).
 
@@ -17,7 +17,7 @@ I am using PostgreSQL database for storing the information. So all the parameter
 
 > Note: .env file should have all the below parameters. When you start the FastAPI backend, the script will automatically create the database and schema (which you specify in .env), if it doesn't exist already
 
-FRONTEND_URL=your frontend UI link
+FRONTEND_URL=your frontend UI link   
 DEFAULT_DATABASE_URI=postgresql://username:password@[localhost or ip]:port/postgres?sslmode=prefer
 DATABASE_URI=postgresql://username:password@[localhost or ip]:port/  
 DATABASE_NAME=database_name  
