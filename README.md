@@ -4,12 +4,12 @@ This project is bootstrapped with [FastAPI](https://fastapi.tiangolo.com/).
 
 ## Overview of this project
 
-When you are done with running the FastAPI (after you complete the below instructions) , you will see **user** and **security** module in the API list.
+After you complete the below instructions, you will see **user** and **security** module in the API list.
 
 1. User APIs will allow you to **CRUD (create, read, update and delete)** user details.
 2. Security APIs will fetch data from the table **security** which will have details of users login. These APIs are created for you to understand how to maintain separate modules for each function. You can try replicating the same for some other functions (like creating CRUD for data table and maintaining separate model, schema and crud).
 
-I am using PostgreSQL database for storing the information. So all the parameters are defined for PostgreSQL in this project. But other SQL databases should follow the same steps mentioned below.
+I am using PostgreSQL database for storing the information. So all the parameters are defined for PostgreSQL in this project.
 
 ## Follow the below steps to use FastAPI
 
@@ -18,8 +18,8 @@ I am using PostgreSQL database for storing the information. So all the parameter
 > Note: .env file should have all the below parameters. When you start the FastAPI backend, the script will automatically create the database and schema (which you specify in .env), if it doesn't exist already
 
 FRONTEND_URL=your frontend UI link
-DEFAULT_DATABASE_URI=postgresql://username:password@<localhost or ip>:port/postgres?sslmode=prefer
-DATABASE_URI=postgresql://username:password@<localhost or ip>:port/  
+DEFAULT_DATABASE_URI=postgresql://username:password@[localhost or ip]:port/postgres?sslmode=prefer
+DATABASE_URI=postgresql://username:password@[localhost or ip]:port/  
 DATABASE_NAME=database_name  
 SCHEMA_NAME=schema_name   
 PROJECT=project_name   
